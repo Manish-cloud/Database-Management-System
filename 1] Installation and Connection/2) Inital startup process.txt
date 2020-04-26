@@ -1,0 +1,52 @@
+SQL*Plus: Release 11.2.0.2.0 Production on Sun Apr 26 18:44:40 2020
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect sys
+Enter password:
+ERROR:
+ORA-28009: connection as SYS should be as SYSDBA or SYSOPER
+
+SQL> connect sys as sysdba
+Enter password:
+Connected.
+SQL> create user Manish;
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+Query Syntax:
+create user username indentified by password;
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL> create user Manish identified by ###;
+
+User created.
+
+SQL> connect Manish
+Enter password:
+ERROR:
+ORA-01017: invalid username/password; logon denied
+
+Warning: You are no longer connected to ORACLE.
+
+SQL> connect Manish
+Enter password:
+ERROR:
+ORA-01045: user MANISH lacks CREATE SESSION privilege; logon denied
+
+SQL> connect sys
+Enter password:
+ERROR:
+ORA-28009: connection as SYS should be as SYSDBA or SYSOPER
+
+SQL> connect sys as sysdba
+Enter password:
+Connected.
+
+SQL> grant all privileges to Manish;
+
+Grant succeeded.
+
+SQL> connect Manish
+Enter password:
+Connected.
+SQL>

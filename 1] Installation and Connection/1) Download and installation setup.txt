@@ -1,0 +1,19 @@
+Download and Installation step of Oracle Database (version : XE 11g)  for windows OS.
+
+1] Download setup from Oracle website
+link : https://www.oracle.com/database/technologies/xe-prior-releases.html
+
+2] Extract Folder
+
+3] Run setup.exe present in OracleXE112_Win64 / DISK1
+
+4] Read Essential setup details carefully. Running Setup application will ask password for DataBase administrator(SYSDBA).
+
+5] You will get Database Summary frame take screenshot of it for future use(It contains port details).
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+# After completing database installation steps search for start Database (by typing in windows 10 search bar) and run it once .
+Now, search and run for sql application.
+
+Note: Step (#) need not to be runned always
+(for further process of connection and user creation check file 2]Inital startup process ) 
