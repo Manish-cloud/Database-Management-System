@@ -1,0 +1,234 @@
+(1) Delete
+Query Syntax : Delete from <tablename> [where <condition>];
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 HR                   Central building, floor no.5
+         3 finance              Central building, floor no. 3
+         2 Marketing            Marketing Building
+
+SQL> select * from emp;
+
+    EMP_ID    DEPT_NO EMP_NAME
+---------- ---------- --------------------
+       100          1 Manish
+       101          2 Tanishq
+       102          2 Tejas
+       103          3 Gaurav
+       104          1 Bhavit
+
+SQL> delete from emp where emp_id=104;
+
+1 row deleted.
+
+SQL> select * from emp;
+
+    EMP_ID    DEPT_NO EMP_NAME
+---------- ---------- --------------------
+       100          1 Manish
+       101          2 Tanishq
+       102          2 Tejas
+       103          3 Gaurav
+
+SQL> delete from emp;
+
+4 rows deleted.
+
+SQL> select * from emp;
+
+no rows selected
+
+SQL> insert into emp values(100,1,'Manish');
+
+1 row created.
+
+SQL> insert into emp values(101,2,'Tanishq');
+
+1 row created.
+
+SQL> insert into emp values(102,2,'Tejas');
+
+1 row created.
+
+SQL> insert into emp values(103,3,'Gaurav');
+
+1 row created.
+
+SQL> insert into emp values(104,1,'Bhavit');
+
+1 row created.
+
+SQL> select * from emp;
+
+    EMP_ID    DEPT_NO EMP_NAME
+---------- ---------- --------------------
+       100          1 Manish
+       101          2 Tanishq
+       102          2 Tejas
+       103          3 Gaurav
+       104          1 Bhavit
+
+SQL> delete from department where dept_id=2;
+delete from department where dept_id=2
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (MANISH.SYS_C007010) violated - child record
+found
+
+SQL> delete from emp where dept_no=2;
+
+2 rows deleted.
+
+SQL> delete from department where dept_id=2;
+
+1 row deleted.
+
+SQL> select * from emp;
+
+    EMP_ID    DEPT_NO EMP_NAME
+---------- ---------- --------------------
+       100          1 Manish
+       103          3 Gaurav
+       104          1 Bhavit
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 HR                   Central building, floor no.5
+         3 finance              Central building, floor no. 3
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+(2) Drop
+Query Syntax : drop table <tablename>
+
+SQL> drop table department;
+drop table department
+           *
+ERROR at line 1:
+ORA-02449: unique/primary keys in table referenced by foreign keys
+
+SQL> drop table emp;
+
+Table dropped.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 HR                   Central building, floor no.5
+         3 finance              Central building, floor no. 3
+
+SQL> select * from emp;
+select * from emp
+              *
+ERROR at line 1:
+ORA-00942: table or view does not exist
+
+Note : Difference between drop and delete is that by using " delete from <tablename> " data of table gets deleted while by using " drop table <tablename> " data as well as table schema gets deleted.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+(3) Update
+Query Syntax : update <tablename> set <attr>=<value> ... [where <condition>];
+
+SQL> insert into department values(2,'Marketing','Central building, floor no. 2');
+
+1 row created.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 HR                   Central building, floor no.5
+         3 finance              Central building, floor no. 3
+         2 Marketing            Central building, floor no.
+
+SQL> create table emp(
+     	emp_id number primary key,
+       	emp_name varchar(20) not null,
+        dept_no number references department(dept_id)
+     );
+
+SQL> desc emp;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                    NOT NULL NUMBER
+ EMP_NAME                                  NOT NULL VARCHAR2(20)
+ DEPT_NO                                            NUMBER
+
+
+SQL> insert into emp values(100,'Manish',1);
+
+1 row created.
+
+SQL> insert into emp values(101,'Bhavit',1);
+
+1 row created.
+
+SQL> insert into emp values(102,'Tanishq',2);
+
+1 row created.
+
+SQL> insert into emp values(103,'Tejas',2);
+
+1 row created.
+
+SQL> insert into emp values(104,'Gaurav',3);
+
+1 row created.
+
+SQL> select * from emp;
+
+    EMP_ID EMP_NAME                DEPT_NO
+---------- -------------------- ----------
+       100 Manish                        1
+       101 Bhavit                        1
+       102 Tanishq                       2
+       103 Tejas                         2
+       104 Gaurav                        3
+
+SQL> update emp set emp_name='Tejas dhussa', dept_no=3 where emp_id=103;
+
+1 row updated.
+
+SQL> update emp set emp_name='Borse' where emp_id=104;
+
+1 row updated.
+
+SQL> select * from emp;
+
+    EMP_ID EMP_NAME                DEPT_NO
+---------- -------------------- ----------
+       100 Manish                        1
+       101 Bhavit                        1
+       102 Tanishq                       2
+       103 Tejas dhussa                  3
+       104 Borse                         3
+
+
+3SQL> update emp set dept_no=4 where emp_id=104;
+update emp set dept_no=4 where emp_id=104
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (MANISH.SYS_C007013) violated - parent key not
+found
+
+SQL> update department set dept_id=4 where dept_id=2;
+update department set dept_id=4 where dept_id=2
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (MANISH.SYS_C007013) violated - child record
+found
+
+
+SQL> update department set dept_id=4 where dept_name='Marketing';
+update department set dept_id=4 where dept_name='Marketing'
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (MANISH.SYS_C007013) violated - child record
+found
