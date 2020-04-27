@@ -1,0 +1,59 @@
+1) To insert all attribute values in order
+
+---------------
+Query Syntax:
+---------------
+insert into <tablename> values (attr_value1, attr_value2, ...);
+
+SQL> desc department;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_ID                                   NOT NULL NUMBER
+ DEPT_NAME                                 NOT NULL VARCHAR2(20)
+ LOCATION                                           VARCHAR2(30)
+
+SQL> insert into department values(1,'cse','Hyd');
+
+1 row created.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 cse                  Hyd
+
+2) To insert attribute values as per attribute name specified in query
+
+---------------
+Query Syntax:
+---------------
+insert into <tablename>(attr1, attr2, ...) values (attr_value1, attr_value2, ...);
+
+SQL> insert into department (dept_id, location, dept_name) values(2,'Pune','IT');
+
+1 row created.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 cse                  Hyd
+         2 IT                   Pune
+
+SQL> insert into department values(3, 'finance');
+insert into department values(3, 'finance')
+           *
+ERROR at line 1:
+ORA-00947: not enough values
+
+SQL> insert into department (dept_id, dept_name) values(3, 'finance');
+
+1 row created.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 cse                  Hyd
+         2 IT                   Pune
+         3 finance
