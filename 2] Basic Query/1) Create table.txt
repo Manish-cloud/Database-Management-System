@@ -1,0 +1,29 @@
+-------------------------------------------------------------------------------------------------------------------------------------------
+Query Syntax
+create table <tablename> (<col1> datatype(width), <col2> datatype(width), .....);
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL*Plus: Release 11.2.0.2.0 Production on Mon Apr 27 07:13:34 2020
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect Manish
+Enter password:
+Connected.
+
+SQL> create table customer(custId number primary key, name varchar(20), address varchar(50));
+
+Table created.
+
+SQL> select * from tab;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+CUSTOMER                       TABLE
+
+SQL> desc customer;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ CUSTID                                    NOT NULL NUMBER
+ NAME                                               VARCHAR2(20)
+ ADDRESS                                            VARCHAR2(50)
