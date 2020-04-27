@@ -1,0 +1,112 @@
+Constraints :=> We have 7 constraints in SQL
+1) Not Null : column level
+2) Unique : 
+3) Primary key
+4) Foreign key
+5) Check
+6) Default
+7) REF constraints
+
+Note:
+1] Composite key should be defined at table level
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL*Plus: Release 11.2.0.2.0 Production on Mon Apr 27 08:34:36 2020
+
+Copyright (c) 1982, 2014, Oracle.  All rights reserved.
+
+SQL> connect Manish
+Enter password:
+Connected.
+
+SQL> create table Department(
+  2     dept_id number primary key, /* Column level constraint */
+  3     dept_name varchar2(20) not null,
+  4     location varchar2(30),
+  5     unique(dept_name)  /*Table level constraint */
+  6  );
+
+Table created.
+
+SQL> desc department
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_ID                                   NOT NULL NUMBER
+ DEPT_NAME                                 NOT NULL VARCHAR2(20)
+ LOCATION                                           VARCHAR2(30)
+
+SQL> insert into department values(1,'finance','Central building, floor no. 5');
+
+1 row created.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 finance              Central building, floor no. 5
+
+SQL> insert into department values(1,'HR','Central building, floor no. 1');
+insert into department values(1,'HR','Central building, floor no. 1')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MANISH.SYS_C006999) violated
+
+SQL> insert into department values(2,'finance','Central building, floor no. 1');
+insert into department values(2,'finance','Central building, floor no. 1')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MANISH.SYS_C007000) violated
+
+SQL> insert into department (dept_id,dept_name) values(2,'HR');  		/* creating department without providing it's location */
+
+1 row created.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 finance              Central building, floor no. 5
+         2 HR
+
+SQL> insert into department (dept_name, location) values('Marketing', 'Building no. 1, floor 1'); 	/* creating department without providing it's dept_id */
+insert into department (dept_name, location) values('Marketing', 'Building no. 1, floor 1')
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("MANISH"."DEPARTMENT"."DEPT_ID")
+
+SQL> insert into department (dept_id, location) values(3, 'Building no. 1, floor 1');			/* creating department without providing it's dept_name */
+insert into department (dept_id, location) values(3, 'Building no. 1, floor 1')
+*
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("MANISH"."DEPARTMENT"."DEPT_NAME")
+
+SQL> create table emp(
+  2     emp_id number primary key,
+  3     emp_name varchar2(30) not null,
+  4     dept_id number references department(dept_id),
+  5     job varchar(30),
+  6     mgr_name varchar(30),
+  7     salary number check (salary>=5000),
+  8     comm number default 100,
+  9     emailId varchar2(30),
+ 10     phone varchar2(13),
+ 11     unique(emailId, phone)  /*composite candidate key*/
+ 12  );
+
+Table created.
+
+// Example of composite primary key
+
+SQL> create table student(
+  2     rollno number,
+  3     division varchar2(1),
+  4     firstname varchar(15) not null,
+  5     middlename varchar(20),
+  6     lastname varchar(20) not null,
+  7     primary key (rollno, division)		/* composite primary key */
+  8  );
+
+Table created.
+
+SQL>
