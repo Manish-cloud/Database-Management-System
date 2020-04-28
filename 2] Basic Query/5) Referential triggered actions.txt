@@ -1,0 +1,150 @@
+Referential contraints:
+1)Allows us to further describe the relationship between the referential column and the object it references by attaching a 'referential triggered action' to the foreign key.
+2)Three triggered actions: on delete or on update
+	SET NULL
+	SET DEFAULT
+	SET CASCADE
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+(1) On delete SET NULL
+
+SQL> create table employee(
+  2     emp_id number primary key,
+  3     emp_name varchar(20) not null,
+  4     dept_no number references department(dept_id) on delete set null
+  5  );
+
+Table created.
+
+SQL> insert into employee values(100,'A',1);
+
+1 row created.
+
+SQL> insert into employee values(101,'B',1);
+
+1 row created.
+
+SQL> insert into employee values(102,'C',2);
+
+1 row created.
+
+SQL> insert into employee values(103,'D',3);
+
+1 row created.
+
+SQL> insert into employee values(104,'E',3);
+
+1 row created.
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME                DEPT_NO
+---------- -------------------- ----------
+       100 A                             1
+       101 B                             1
+       102 C                             2
+       103 D                             3
+       104 E                             3
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 HR                   Central building, floor no.5
+         3 finance              Central building, floor no. 3
+         2 Marketing            Central building, floor no. 2
+
+SQL> update department set dept_id = 4 where dept_name='finance';
+update department set dept_id = 4 where dept_name='finance'
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (MANISH.SYS_C007018) violated - child record
+found
+
+
+SQL> delete from department where dept_id = 3;
+
+1 row deleted.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 HR                   Central building, floor no.5
+         2 Marketing            Central building, floor no. 2
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME                DEPT_NO
+---------- -------------------- ----------
+       100 A                             1
+       101 B                             1
+       102 C                             2
+       103 D
+       104 E
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+(2) On delete SET CASCADE
+
+SQL> create table employee(
+  2     emp_id number primary key,
+  3     emp_name varchar(20) not null,
+  4     dept_no number references department(dept_id) on delete cascade
+  5  );
+
+Table created.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 HR                   Central building, floor no.5
+         3 finance              Central building, floor no. 3
+         2 Marketing            Central building, floor no. 2
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME                DEPT_NO
+---------- -------------------- ----------
+       100 A                             1
+       101 B                             1
+       102 C                             2
+       103 D                             3
+       104 E                             3
+
+SQL> update department set dept_id=4 where dept_id=3;
+update department set dept_id=4 where dept_id=3
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (MANISH.SYS_C007021) violated - child record
+found
+
+
+SQL> update department set dept_id=4 where dept_name='finance';
+update department set dept_id=4 where dept_name='finance'
+*
+ERROR at line 1:
+ORA-02292: integrity constraint (MANISH.SYS_C007021) violated - child record
+found
+
+
+SQL> delete from department where dept_id=3;
+
+1 row deleted.
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- ------------------------------
+         1 HR                   Central building, floor no.5
+         2 Marketing            Central building, floor no. 2
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME                DEPT_NO
+---------- -------------------- ----------
+       100 A                             1
+       101 B                             1
+       102 C                             2
+
