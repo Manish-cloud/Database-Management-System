@@ -1,0 +1,96 @@
+Aliasing: 
+ALIASES can be used to create a temporary name for columns or tables.
+COLUMN ALIASES are used to make column headings in your result set easier to read.
+TABLE ALIASES are used to shorten your SQL to make it easier to read or when you are performing a self join.
+
+Synatx :
+
+The syntax to ALIAS A COLUMN in Oracle/PLSQL is:
+column_name AS alias_name
+
+OR
+
+The syntax to ALIAS A TABLE in Oracle/PLSQL is:
+table_name alias_name
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+(1) Finding supervisor name for employees
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME      DEPT_NO     SUP_ID
+---------- ---------- ---------- ----------
+         1 A                   1          4
+         2 B                   1
+         5 Z                   2          4
+         3 D                   3          4
+         4 A                   2          2
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- --------------------------------------------------
+         1 HR                   Central building, floor no.5
+         3 finance              Central building, floor no. 3
+         4 Production           Production building, floor no. 1,2 and 3
+         2 Marketing            Central building, floor no. 2
+
+SQL> select
+  2     e.emp_id as employee_ID,
+  3     e.emp_name as employee_name,
+  4     s.emp_name as supervisor_name
+  5  from employee e, employee s
+  6  where e.sup_id=s.emp_id;
+
+EMPLOYEE_ID EMPLOYEE_N SUPERVISOR
+----------- ---------- ----------
+          4 A          B
+          3 D          A
+          5 Z          A
+          1 A          A
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+(2) Finding name of department in which employee works.
+
+SQL> alter table employee rename column dept_no to dept_id;
+
+Table altered.
+
+/*
+Changed column name to explain concept of aliasing
+*/
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME      DEPT_ID     SUP_ID
+---------- ---------- ---------- ----------
+         1 A                   1          4
+         2 B                   1
+         5 Z                   2          4
+         3 D                   3          4
+         4 A                   2          2
+
+SQL> select * from department;
+
+   DEPT_ID DEPT_NAME            LOCATION
+---------- -------------------- --------------------------------------------------
+         1 HR                   Central building, floor no.5
+         3 finance              Central building, floor no. 3
+         4 Production           Production building, floor no. 1,2 and 3
+         2 Marketing            Central building, floor no. 2
+
+SQL> select
+  2     emp_id as employee_id,
+  3     emp_name as employee_name,
+  4     dept_name as department_name
+  5  from employee emp, department dept
+  6  where emp.dept_id = dept.dept_id;
+
+EMPLOYEE_ID EMPLOYEE_N DEPARTMENT_NAME
+----------- ---------- --------------------
+          1 A          HR
+          2 B          HR
+          5 Z          Marketing
+          3 D          finance
+          4 A          Marketing
+
