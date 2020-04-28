@@ -1,0 +1,297 @@
+View: 
+It is a virtual table based on the result set of a SQL statement.
+It is used to create virtual table from table as per requirement of interest area of user. 
+
+Syntax:	
+create VIEW <viewname> as ( select <column name> from <table name> where <condition> );
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL> create table dept(
+  2     dept_id number primary key,
+  3     dept_name varchar(10) unique
+  4  );
+
+Table created.
+
+SQL> create table student(
+  2     student_id number primary key,
+  3     student_name varchar(15) not null,
+  4     dept_no number references dept(dept_id)
+  5  );
+
+Table created.
+
+SQL> desc student;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUDENT_ID                                NOT NULL NUMBER
+ STUDENT_NAME                              NOT NULL VARCHAR2(15)
+ DEPT_NO                                            NUMBER
+
+SQL> desc dept;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_ID                                   NOT NULL NUMBER
+ DEPT_NAME                                          VARCHAR2(10)
+
+SQL> insert into dept values(1,'CS');
+
+1 row created.
+
+SQL> insert into dept values(2,'IT');
+
+1 row created.
+
+SQL> insert into dept values(3,'Civil');
+
+1 row created.
+
+SQL> insert into dept values(4,'Mechanical');
+
+1 row created.
+
+SQL> insert into dept values(5,'ENTC');
+
+1 row created.
+
+SQL> select * from dept;
+
+   DEPT_ID DEPT_NAME
+---------- ----------
+         1 CS
+         2 IT
+         3 Civil
+         4 Mechanical
+         5 ENTC
+		 
+SQL> insert into student values(101,'A',1);
+
+1 row created.
+
+SQL> insert into student values(102,'B',1);
+
+1 row created.
+
+SQL> insert into student values(103,'C',1);
+
+1 row created.
+
+SQL> insert into student values(104,'D',1);
+
+1 row created.
+
+SQL> insert into student values(201,'P',2);
+
+1 row created.
+
+SQL> insert into student values(202,'Q',2);
+
+1 row created.
+
+SQL> insert into student values(203,'R',2);
+
+1 row created.
+
+SQL> insert into student values(204,'S',2);
+
+1 row created.
+
+SQL> insert into student values(301,'X',3);
+
+1 row created.
+
+SQL> insert into student values(302,'Y',3);
+
+1 row created.
+
+SQL> insert into student values(303,'Z',3);
+
+1 row created.
+
+SQL> insert into student values(401,'E',4);
+
+1 row created.
+
+SQL> insert into student values(402,'F',4);
+
+1 row created.
+
+SQL> insert into student values(403,'G',4);
+
+1 row created.
+
+SQL> insert into student values(404,'H',4);
+
+1 row created.
+
+SQL> insert into student values(501,'L',5);
+
+1 row created.
+
+SQL> insert into student values(502,'M',5);
+
+1 row created.
+
+SQL> insert into student values(503,'N',5);
+
+1 row created.
+
+SQL> insert into student values(504,'O',5);
+
+1 row created.
+
+SQL> select * from student;
+
+STUDENT_ID STUDENT_NAME       DEPT_NO
+---------- --------------- ----------
+       101 A                        1
+       102 B                        1
+       103 C                        1
+       104 D                        1
+       201 P                        2
+       202 Q                        2
+       203 R                        2
+       204 S                        2
+       301 X                        3
+       302 Y                        3
+       303 Z                        3
+
+STUDENT_ID STUDENT_NAME       DEPT_NO
+---------- --------------- ----------
+       401 E                        4
+       402 F                        4
+       403 G                        4
+       404 H                        4
+       501 L                        5
+       502 M                        5
+       503 N                        5
+       504 O                        5
+
+19 rows selected.
+
+SQL> create table cs_stud_table as (select student_id, student_name from student,dept where dept_no=dept_id and dept_name='CS');
+
+Table created.
+
+SQL> create view cs_stud_view as (select student_id, student_name from student,dept where dept_no=dept_id and dept_name='CS');
+
+View created.
+
+SQL> select * from cs_stud_table;
+
+STUDENT_ID STUDENT_NAME
+---------- ---------------
+       101 A
+       102 B
+       103 C
+       104 D
+
+SQL> select * from cs_stud_view;
+
+STUDENT_ID STUDENT_NAME
+---------- ---------------
+       101 A
+       102 B
+       103 C
+       104 D
+
+SQL> insert into student values(105,'J',1);
+
+1 row created.
+
+SQL> select * from cs_stud_table;
+
+STUDENT_ID STUDENT_NAME
+---------- ---------------
+       101 A
+       102 B
+       103 C
+       104 D
+
+SQL> select * from cs_stud_view;
+
+STUDENT_ID STUDENT_NAME
+---------- ---------------
+       101 A
+       102 B
+       103 C
+       104 D
+       105 J
+
+SQL>
+
+
+NOTE :: cs_stud_table is static while cs_stud_view is dynamic
+
+
+SQL> insert into cs_stud_table values(107,'I');
+
+1 row created.
+
+SQL> select * from cs_stud_table;
+
+STUDENT_ID STUDENT_NAME
+---------- ---------------
+       101 A
+       102 B
+       103 C
+       104 D
+       107 I
+
+SQL> insert into cs_stud_view values(106,'K');
+
+1 row created.
+
+SQL> select * from cs_stud_view;
+
+STUDENT_ID STUDENT_NAME
+---------- ---------------
+       101 A
+       102 B
+       103 C
+       104 D
+       105 J
+
+SQL> select * from student;
+
+STUDENT_ID STUDENT_NAME       DEPT_NO
+---------- --------------- ----------
+       101 A                        1
+       102 B                        1
+       103 C                        1
+       104 D                        1
+       201 P                        2
+       202 Q                        2
+       203 R                        2
+       204 S                        2
+       301 X                        3
+       302 Y                        3
+       303 Z                        3
+
+STUDENT_ID STUDENT_NAME       DEPT_NO
+---------- --------------- ----------
+       401 E                        4
+       402 F                        4
+       403 G                        4
+       404 H                        4
+       501 L                        5
+       502 M                        5
+       503 N                        5
+       504 O                        5
+       105 J                        1
+       106 K
+
+21 rows selected.
+
+SQL> select * from student where student_id=106;
+
+STUDENT_ID STUDENT_NAME       DEPT_NO
+---------- --------------- ----------
+       106 K
+
+SQL> select * from student where student_id=107;
+
+no rows selected
+
+NOTE : value inserted through cs_stud_table has not been added in student table where as value inserted through cs_stud_view has been added in student table
