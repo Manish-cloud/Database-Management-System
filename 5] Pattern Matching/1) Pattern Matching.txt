@@ -1,0 +1,75 @@
+SQL> create table stud(
+  2     roll_no number primary key,
+  3     name varchar(15) not null,
+  4     percentage varchar(5) not null,
+  5     email_id varchar(20) not null
+  6  );
+
+Table created.
+
+SQL> insert into stud values(1,'Prajwal','85%','prajwal@gmail.com');
+
+1 row created.
+
+SQL> insert into stud values(2,'Gaurav','73%','gborse900@gmail.com');
+
+1 row created.
+
+SQL> insert into stud values(3,'Manish','93%','manish@gmail.com');
+
+1 row created.
+
+SQL> insert into stud values(4,'Bhavit','91%','dagade@gmail.com');
+
+1 row created.
+
+SQL> insert into stud values(5,'Akash','98%','bagade@gmail.com');
+
+1 row created.
+
+SQL> select * from stud;
+
+   ROLL_NO NAME            PERCE EMAIL_ID
+---------- --------------- ----- --------------------
+         1 Prajwal         85%   prajwal@gmail.com
+         2 Gaurav          73%   gborse900@gmail.com
+         3 Manish          93%   manish@gmail.com
+         4 Bhavit          91%   dagade@gmail.com
+         5 Akash           98%   bagade@gmail.com
+
+SQL> select * from stud where name like 'M%';
+
+   ROLL_NO NAME            PERCE EMAIL_ID
+---------- --------------- ----- --------------------
+         3 Manish          93%   manish@gmail.com
+
+SQL> select * from stud where name not like 'M%';
+
+   ROLL_NO NAME            PERCE EMAIL_ID
+---------- --------------- ----- --------------------
+         1 Prajwal         85%   prajwal@gmail.com
+         2 Gaurav          73%   gborse900@gmail.com
+         4 Bhavit          91%   dagade@gmail.com
+         5 Akash           98%   bagade@gmail.com
+
+SQL> select * from stud where name like '_a%';
+
+   ROLL_NO NAME            PERCE EMAIL_ID
+---------- --------------- ----- --------------------
+         2 Gaurav          73%   gborse900@gmail.com
+         3 Manish          93%   manish@gmail.com
+
+SQL> select * from stud where percentage like '98/%' escape '/';
+
+   ROLL_NO NAME            PERCE EMAIL_ID
+---------- --------------- ----- --------------------
+         5 Akash           98%   bagade@gmail.com
+
+SQL> select * from stud where email_id like '%ade@%';
+
+   ROLL_NO NAME            PERCE EMAIL_ID
+---------- --------------- ----- --------------------
+         4 Bhavit          91%   dagade@gmail.com
+         5 Akash           98%   bagade@gmail.com
+
+SQL>
