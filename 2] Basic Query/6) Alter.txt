@@ -1,0 +1,218 @@
+Alter : 
+It is used to add, delete or modify columns in an existing table.
+Also used to add add drop various constraints on an existing table.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL> create table employee(
+  2     emp_id number,
+  3     emp_name varchar(15) UNIQUE,
+  4     salary number check (salary >= 5000),
+  5     phone varchar(13),
+  6     pincode varchar(10)
+  7  );
+
+SQL> desc employee;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMP_ID                                             NUMBER
+ EMP_NAME                                           VARCHAR2(15)
+ SALARY                                             NUMBER
+ PHONE                                              VARCHAR2(13)
+ PINCODE                                            VARCHAR2(10)
+
+SQL> insert into employee values(1,'A',5600,'9876543210',411035);
+
+1 row created.
+
+SQL> insert into employee values(2,'B',15600,'1234567890',411012);
+
+1 row created.
+
+SQL> insert into employee values(2,'D',17000,'788945560',411011);
+
+1 row created.
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME            SALARY PHONE         PINCODE
+---------- --------------- ---------- ------------- ----------
+         1 A                     5600 9876543210    411035
+         2 B                    15600 1234567890    411012
+         2 D                    17000 788945560     411011
+
+SQL> delete from employee where emp_name='D';
+
+1 row deleted.
+
+SQL> alter table employee add primary key(emp_id);
+
+Table altered.
+
+SQL> insert into employee values(2,'D',17000,'788945560',411011);
+insert into employee values(2,'D',17000,'788945560',411011)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MANISH.SYS_C007024) violated
+
+
+SQL> insert into employee values(3,'D',17000,'788945560',411011);
+
+1 row created.
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME            SALARY PHONE         PINCODE
+---------- --------------- ---------- ------------- ----------
+         1 A                     5600 9876543210    411035
+         2 B                    15600 1234567890    411012
+         3 D                    17000 788945560     411011
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL> insert into employee values(4,'A',11000,'654512230',411071);
+insert into employee values(4,'A',11000,'654512230',411071)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MANISH.SYS_C007023) violated
+
+
+SQL> alter table employee drop unique(emp_name);
+
+Table altered.
+
+SQL> insert into employee values(4,'A',11000,'654512230',411071);
+
+1 row created.
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME            SALARY PHONE         PINCODE
+---------- --------------- ---------- ------------- ----------
+         1 A                     5600 9876543210    411035
+         2 B                    15600 1234567890    411012
+         3 D                    17000 788945560     411011
+         4 A                    11000 654512230     411071
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL> alter table employee modify check (salary>=10000);
+alter table employee modify check (salary>=10000)
+*
+ERROR at line 1:
+ORA-02293: cannot validate (MANISH.SYS_C007025) - check constraint violated
+
+
+SQL> alter table employee modify check (salary>=5500);
+
+Table altered.
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL> alter table employee add address varchar(50);
+
+Table altered.
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME            SALARY PHONE         PINCODE
+---------- --------------- ---------- ------------- ----------
+ADDRESS
+--------------------------------------------------
+         1 A                     5600 9876543210    411035
+
+
+         2 B                    15600 1234567890    411012
+
+
+         3 D                    17000 788945560     411011
+
+
+
+    EMP_ID EMP_NAME            SALARY PHONE         PINCODE
+---------- --------------- ---------- ------------- ----------
+ADDRESS
+--------------------------------------------------
+         4 A                    11000 654512230     411071
+
+
+SQL> set linesize 1000;
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME            SALARY PHONE         PINCODE    ADDRESS
+---------- --------------- ---------- ------------- ---------- --------------------------------------------------
+         1 A                     5600 9876543210    411035
+         2 B                    15600 1234567890    411012
+         3 D                    17000 788945560     411011
+         4 A                    11000 654512230     411071
+
+SQL> insert into employee values(5,'Z',15000,'122332210',411011,'pradhikaran, nigdi, pune, Mahrashtra');
+
+1 row created.
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME            SALARY PHONE         PINCODE    ADDRESS
+---------- --------------- ---------- ------------- ---------- --------------------------------------------------
+         1 A                     5600 9876543210    411035
+         2 B                    15600 1234567890    411012
+         5 Z                    15000 122332210     411011     pradhikaran, nigdi, pune, Mahrashtra
+         3 D                    17000 788945560     411011
+         4 A                    11000 654512230     411071
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL> desc employee;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ EMP_ID                                                NOT NULL NUMBER
+ EMP_NAME                                                       VARCHAR2(15)
+ SALARY                                                         NUMBER
+ PHONE                                                          VARCHAR2(13)
+ PINCODE                                                        VARCHAR2(10)
+ ADDRESS                                                        VARCHAR2(50)
+
+SQL> alter table employee modify emp_name varchar(25);
+
+Table altered.
+
+SQL> desc employee;
+ Name                                                  Null?    Type
+ ----------------------------------------------------- -------- ------------------------------------
+ EMP_ID                                                NOT NULL NUMBER
+ EMP_NAME                                                       VARCHAR2(25)
+ SALARY                                                         NUMBER
+ PHONE                                                          VARCHAR2(13)
+ PINCODE                                                        VARCHAR2(10)
+ ADDRESS                                                        VARCHAR2(50)
+
+SQL>
+
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME                      SALARY PHONE         PINCODE    ADDRESS
+---------- ------------------------- ---------- ------------- ---------- --------------------------------------------------
+         1 A                               5600 9876543210    411035
+         2 B                              15600 1234567890    411012
+         5 Z                              15000 122332210     411011     pradhikaran, nigdi, pune, Mahrashtra
+         3 D                              17000 788945560     411011
+         4 A                              11000 654512230     411071
+
+SQL> alter table employee drop column address;
+
+Table altered.
+
+SQL> select * from employee;
+
+    EMP_ID EMP_NAME                      SALARY PHONE         PINCODE
+---------- ------------------------- ---------- ------------- ----------
+         1 A                               5600 9876543210    411035
+         2 B                              15600 1234567890    411012
+         5 Z                              15000 122332210     411011
+         3 D                              17000 788945560     411011
+         4 A                              11000 654512230     411071
+
+SQL>
