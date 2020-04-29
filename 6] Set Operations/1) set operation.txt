@@ -1,0 +1,138 @@
+SQL> create table enroll(
+  2     stud_id number,
+  3     course_name varchar(15),
+  4     grade varchar(1)
+  5  );
+
+Table created.
+
+SQL> insert into enroll values(1, 'Maths', 'A');
+
+1 row created.
+
+SQL> insert into enroll values(2, 'Physics', 'A');
+
+1 row created.
+
+SQL> insert into enroll values(3, 'Chemistry', 'C');
+
+1 row created.
+
+SQL> insert into enroll values(2, 'Maths', 'B');
+
+1 row created.
+
+SQL> insert into enroll values(2, 'Biology', 'B');
+
+1 row created.
+
+SQL> insert into enroll values(1, 'Chemistry', 'A');
+
+1 row created.
+
+SQL> insert into enroll values(3, 'Physics', 'D');
+
+1 row created.
+
+SQL> insert into enroll values(2, 'Chemistry', 'A');
+
+1 row created.
+
+SQL> insert into enroll values(2, 'History', 'A');
+
+1 row created.
+
+SQL> select * from enroll;
+
+   STUD_ID COURSE_NAME     G
+---------- --------------- -
+         1 Maths           A
+         2 Physics         A
+         3 Chemistry       C
+         2 Maths           B
+         2 Biology         B
+         1 Chemistry       A
+         3 Physics         D
+         2 Chemistry       A
+         2 History         A
+
+9 rows selected.
+
+Q.1) Retrieve the list of stud_ids who got either grade 'A' or grade 'B' ?
+
+SQL> select stud_id from enroll where grade='A'
+  2     UNION
+  3  select stud_id from enroll where grade='B';
+
+   STUD_ID
+----------
+         1
+         2
+
+Q.2) Retrieve the list of stud_ids and course_name in which student got either grade 'A' or grade 'B' ?
+
+SQL> select stud_id,course_name from enroll where grade='A';
+
+   STUD_ID COURSE_NAME
+---------- ---------------
+         1 Maths
+         2 Physics
+         1 Chemistry
+         2 Chemistry
+         2 History
+
+SQL> select stud_id,course_name from enroll where grade='B';
+
+   STUD_ID COURSE_NAME
+---------- ---------------
+         2 Maths
+         2 Biology
+
+SQL> select stud_id,course_name from enroll where grade='A'
+  2     UNION All
+  3  select stud_id,course_name from enroll where grade='B';
+
+   STUD_ID COURSE_NAME
+---------- ---------------
+         1 Maths
+         2 Physics
+         1 Chemistry
+         2 Chemistry
+         2 History
+         2 Maths
+         2 Biology
+
+7 rows selected.
+
+Q.3) Retrieve the list of stud_ids who got both grade 'A' and grade 'B' ?
+
+SQL> select stud_id from enroll where grade='A'
+  2     INTERSECT
+  3  select stud_id from enroll where grade='B';
+
+   STUD_ID
+----------
+         2
+
+
+ ------------------------
+| Issue in Intersect ALL |
+ -------------------------------------------------------------------------------------------------------------------------------
+| SQL> select stud_id from enroll where grade='A' INTERSECT All select stud_id from enroll where grade='B';						|
+| select stud_id from enroll where grade='A' INTERSECT All select stud_id from enroll where grade='B'							|
+|                                                      *																		|
+| ERROR at line 1:																												|
+| ORA-00928: missing SELECT keyword																								|
+ -------------------------------------------------------------------------------------------------------------------------------
+ 
+ Q.4) Retrieve the list of stud_ids who got grade 'A' but not grade 'B' ?
+ 
+ -----------------
+| Issue in Except |
+ -------------------------------------------------------------------------------------------------------------------------------
+| SQL> select stud_id from enroll where grade='A' except select stud_id from enroll where grade='B';							|
+| select stud_id from enroll where grade='A' except select stud_id from enroll where grade='B'									|
+|                                            *																					|
+| ERROR at line 1:																												|
+| ORA-00933: SQL command not properly ended																						|
+ -------------------------------------------------------------------------------------------------------------------------------
