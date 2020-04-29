@@ -118,11 +118,11 @@ SQL> select stud_id from enroll where grade='A'
  ------------------------
 | Issue in Intersect ALL |
  -------------------------------------------------------------------------------------------------------------------------------
-| SQL> select stud_id from enroll where grade='A' INTERSECT All select stud_id from enroll where grade='B';						|
-| select stud_id from enroll where grade='A' INTERSECT All select stud_id from enroll where grade='B'							|
-|                                                      *																		|
-| ERROR at line 1:																												|
-| ORA-00928: missing SELECT keyword																								|
+| SQL> select stud_id from enroll where grade='A' INTERSECT All select stud_id from enroll where grade='B';                     |
+| select stud_id from enroll where grade='A' INTERSECT All select stud_id from enroll where grade='B'                           |
+|                                                      *                                                                        |
+| ERROR at line 1:                                                                                                              |
+| ORA-00928: missing SELECT keyword                                                                                             |
  -------------------------------------------------------------------------------------------------------------------------------
  
  Q.4) Retrieve the list of stud_ids who got grade 'A' but not grade 'B' ?
@@ -130,9 +130,9 @@ SQL> select stud_id from enroll where grade='A'
  -----------------
 | Issue in Except |
  -------------------------------------------------------------------------------------------------------------------------------
-| SQL> select stud_id from enroll where grade='A' except select stud_id from enroll where grade='B';							|
-| select stud_id from enroll where grade='A' except select stud_id from enroll where grade='B'									|
-|                                            *																					|
-| ERROR at line 1:																												|
-| ORA-00933: SQL command not properly ended																						|
+| SQL> select stud_id from enroll where grade='A' except select stud_id from enroll where grade='B';                            |
+| select stud_id from enroll where grade='A' except select stud_id from enroll where grade='B'                                  |
+|                                            *                                                                                  |
+| ERROR at line 1:                                                                                                              |
+| ORA-00933: SQL command not properly ended                                                                                     |
  -------------------------------------------------------------------------------------------------------------------------------
